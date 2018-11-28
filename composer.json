@@ -1,0 +1,36 @@
+{
+    "name": "stadly/phpstan-srict-rules-function-not-found",
+    "type": "library",
+    "description": "Repository showcasing issue https://github.com/phpstan/phpstan-strict-rules/issues/52",
+    "keywords": [
+        "phpstan",
+        "phpstan-srict-rules",
+        "issue"
+    ],
+    "homepage": "https://github.com/Stadly/PhpstanStrictRulesFunctionNotFound",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Magnar Ovedal Myrtveit",
+            "email": "magnar@myrtveit.com",
+            "homepage": "https://github.com/Stadly",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "phpstan/phpstan": "^0.10.0",
+        "phpstan/phpstan-strict-rules": "^0.10.0"
+    },
+    "scripts": {
+        "test": "phpstan analyse"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

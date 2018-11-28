@@ -1,0 +1,9 @@
+parameters:
+  level: max
+  paths:
+    - src/functions.php
+  autoload_files:
+    - src/functions.php
+
+includes:
+  - vendor/phpstan/phpstan-strict-rules/rules.neon
