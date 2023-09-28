@@ -1,0 +1,5 @@
+{
+  "name": "vitest-axe missing types",
+  "image": "node:18",
+  "postCreateCommand": "npm install"
+}
