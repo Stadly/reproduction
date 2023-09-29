@@ -1,38 +1,47 @@
-# create-svelte
+The [documentation says](https://testing-library.com/docs/svelte-testing-library/api#cleanup) that `cleanup` is done automatically.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+I have a different experience, however. This test passes:
+```js
+it('should render page', () => {
+	const { getByRole } = render(Page);
+	expect(getByRole("heading", { level: 1 }).textContent).toBe("Welcome to SvelteKit");
+});
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+If I add another test after it, that one fails:
+```js
+it('should have been cleaned up before next test is run', () => {
+	const { getByRole } = render(Page);
+	expect(getByRole("heading", { level: 1 }).textContent).toBe("Welcome to SvelteKit");
+});
 ```
 
-## Building
+The error is:
+```
+TestingLibraryElementError: Found multiple elements with the role "heading"
 
-To create a production version of your app:
+Here are the matching elements:
 
-```bash
-npm run build
+Ignored nodes: comments, script, style
+<h1>
+  Welcome to SvelteKit
+</h1>
+
+Ignored nodes: comments, script, style
+<h1>
+  Welcome to SvelteKit
+</h1>
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
 ```
 
-You can preview the production build with `npm run preview`.
+If I add this to the top of my file, both tests pass:
+```js
+import { cleanup } from "@testing-library/svelte";
+import { afterEach } from "vitest";
+afterEach(() => {
+  cleanup();
+});
+```
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Reported issue: https://github.com/testing-library/svelte-testing-library/issues/270
