@@ -1,0 +1,13 @@
+{
+  "image": "node:18",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "eamodio.gitlens",
+        "svelte.svelte-vscode",
+        "zixuanchen.vitest-explorer"
+      ]
+    }
+  }
+}
