@@ -1,0 +1,8 @@
+{
+  "name": "node-starter",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@auth/core": "^0.23.0"
+  }
+}
