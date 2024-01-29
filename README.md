@@ -1,38 +1,51 @@
-# create-svelte
+# Issue with adapter-node and cyclic import
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Importing an environment variable from `$env/static/private` in a javascript file that dynamically imports another javascript file that imports the same environment variable leads to cyclic imports in the output from `adapter-node`.
 
-## Creating a project
+# Input
 
-If you're seeing this, you've probably already done this step. Congrats!
+```js
+// src/hooks.server.js
+import { MY_VAR } from "$env/static/private";
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+export const b = MY_VAR.trim();
 
-# create a new project in my-app
-npm create svelte@latest my-app
+const { a } = await import("./dynamic-import.js");
 ```
 
-## Developing
+```js
+// src/dynamic-import.js
+import { MY_VAR } from "$env/static/private";
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+export const a = MY_VAR.trim();
 ```
 
-## Building
+# Output
 
-To create a production version of your app:
-
-```bash
+```shell
 npm run build
 ```
 
-You can preview the production build with `npm run preview`.
+```js
+// .svelte-kit/adapter-node/chunks/hooks.server.js
+const MY_VAR = "test";
+const b = MY_VAR.trim();
+await import("./dynamic-import.js"); // <----- HERE -----
+const hooks_server = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  b
+}, Symbol.toStringTag, { value: "Module" }));
+export {
+  MY_VAR as M,
+  hooks_server as h
+};
+```
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```js
+// .svelte-kit/adapter-node/chunks/dynamic-import.js
+import { M as MY_VAR } from "./hooks.server.js"; // <----- HERE -----
+const a = MY_VAR.trim();
+export {
+  a
+};
+```
