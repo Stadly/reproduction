@@ -1,0 +1,11 @@
+{
+    "image": "node",
+    "mounts": [
+        {
+            "source": ".",
+            "target": "/var/workspace",
+            "type": "bind"
+        }
+    ],
+    "postCreateCommand": "npm install"
+}
