@@ -1,3 +1,5 @@
+The branch `svelte/vitest-test-coverage-v8` replaces the repository https://github.com/Stadly/VitestSvelteTestCoverageV8
+
 # create-svelte
 
 Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
