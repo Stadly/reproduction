@@ -21,9 +21,10 @@
         </SignOut>
       {:else}
         <span class="notSignedInText">You are not signed in</span>
-        <SignIn>
-          <div slot="submitButton" class="buttonPrimary">Sign in</div>
+        <SignIn options={{ redirectTo: "/protected" }}>
+          <div slot="submitButton" class="buttonPrimary">Sign in (redirect not working)</div>
         </SignIn>
+        <a href="/auth/signin?callbackUrl=%2Fprotected">Sign in (redirect working)</a>
       {/if}
     </div>
   </div>
